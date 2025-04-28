@@ -20,12 +20,20 @@ function Pets({ pets }) {
   );
 }
 
-Pets.getInitialProps = async function() {
-  const res = await fetch(`http://pet-library.moonhighway.com/api/pets`);
-  const data = await res.json();
-  console.log(data); 
-  return {
-    pets: data.pets || []  };
+Pets.getInitialProps = async function () {
+  try {
+    const res = await fetch("http://pet-library.moonhighway.com/api/pets");
+    const data = await res.json();
+
+    console.log(data); 
+
+    return {
+      pets: Array.isArray(data) ? data : data.pets || [], 
+    };
+  } catch (error) {
+
+    return { pets: [] };
+  }
 };
 
 export default Pets;
